@@ -12,6 +12,16 @@ pub use description::TicketDescription;
 pub use status::Status;
 pub use title::TicketTitle;
 
+#[derive(Debug, PartialEq)]
+pub struct ParseError(&'static str);
+
+impl std::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.0);
+        Ok(())
+    }
+}
+
 #[derive(Debug, PartialEq, Clone)]
 // We no longer need to make the fields private!
 // Since each field encapsulates its own validation logic, there is no risk of

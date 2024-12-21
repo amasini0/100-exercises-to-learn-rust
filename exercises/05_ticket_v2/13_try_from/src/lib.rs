@@ -8,6 +8,30 @@ enum Status {
     Done,
 }
 
+#[derive(Debug)]
+struct StatusParseError;
+
+impl TryFrom<String> for Status {
+    type Error = StatusParseError;
+
+    fn try_from(status: String) -> Result<Self, Self::Error> {
+        match status.trim().to_lowercase().as_str() {
+            "todo" => Ok(Status::ToDo),
+            "inprogress" => Ok(Status::InProgress),
+            "done" => Ok(Status::Done),
+            _ => Err(StatusParseError),
+        }
+    }
+}
+
+impl TryFrom<&str> for Status {
+    type Error = StatusParseError;
+
+    fn try_from(status: &str) -> Result<Self, Self::Error> {
+        Self::try_from(status.to_string())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

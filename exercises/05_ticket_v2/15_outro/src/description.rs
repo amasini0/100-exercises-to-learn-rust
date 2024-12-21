@@ -1,8 +1,35 @@
 // TODO: Implement `TryFrom<String>` and `TryFrom<&str>` for the `TicketDescription` type,
 //   enforcing that the description is not empty and is not longer than 500 bytes.
 //   Implement the traits required to make the tests pass too.
+use crate::ParseError;
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct TicketDescription(String);
+
+impl TryFrom<String> for TicketDescription {
+    type Error = ParseError;
+
+    fn try_from(description: String) -> Result<Self, Self::Error> {
+        if description.is_empty() {
+            return Err(ParseError("The description cannot be empty"));
+        }
+        if description.len() > 500 {
+            return Err(ParseError(
+                "The description cannot be longer than 500 bytes",
+            ));
+        }
+
+        Ok(TicketDescription(description))
+    }
+}
+
+impl TryFrom<&str> for TicketDescription {
+    type Error = ParseError;
+
+    fn try_from(description: &str) -> Result<Self, Self::Error> {
+        description.to_string().try_into()
+    }
+}
 
 #[cfg(test)]
 mod tests {
