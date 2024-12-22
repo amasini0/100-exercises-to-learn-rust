@@ -10,6 +10,12 @@ pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
 
+impl<'a> TicketStore {
+    fn iter(&'a self) -> std::slice::Iter<'a, Ticket> {
+        self.tickets.iter()
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Ticket {
     title: TicketTitle,
